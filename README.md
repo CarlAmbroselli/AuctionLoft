@@ -6,7 +6,7 @@ AppEngine Instance running on: [https://auctionloft.appspot.com](https://auction
 
 ##Endpoints
 
-####List Items
+###List Items
 |Path    | Method | Params |
 |:-------|:-------|:-------|
 |/items  |GET     |none    |
