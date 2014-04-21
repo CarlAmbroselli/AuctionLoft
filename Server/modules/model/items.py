@@ -1,3 +1,6 @@
+#!/usr/bin/python2.7
+# Licensed under MIT License
+
 from protorpc import messages
 
 class Item(messages.Message):
@@ -13,3 +16,6 @@ class Item(messages.Message):
 class ItemCollection(messages.Message):
     """Collection of Items."""
     items = messages.MessageField(Item, 1, repeated=True)
+
+if __name__ == '__main__':
+    main()
