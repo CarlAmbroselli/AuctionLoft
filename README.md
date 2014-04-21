@@ -11,11 +11,14 @@ AppEngine Instance running on: [https://auctionloft.appspot.com](https://auction
 |:-------|:-------|:-------|
 |/items  |GET     |none    |
  
-~~~
-Request:
-GET https://auctionloft.appspot.com/_ah/api/staging/v1/items
 
-Response:
+#####Request:
+~~~
+GET https://auctionloft.appspot.com/_ah/api/staging/v1/items
+~~~
+
+#####Response:
+~~~
 {
  "items": [
   {
