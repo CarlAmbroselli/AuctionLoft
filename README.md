@@ -43,5 +43,27 @@ GET https://auctionloft.appspot.com/_ah/api/staging/v1/items
  "kind": "staging#items",
  "etag": "\"gXhqy01Wkwh3eRtwUqEtA2ewiXg/hsIf2C-jZtYE9HNhxM1rCoDFl8Q\""
 }
+~~~
 
+###Get Item
+|Path    	 | Method | Params |
+|:-----------|:-------|:-------|
+|/item/{id}  |GET     |none    |
+ 
+
+#####Request:
+~~~
+GET https://auctionloft.appspot.com/_ah/api/staging/v1/item/1
+~~~
+
+#####Response:
+~~~
+{
+ "description": "Super lightweight laptop",
+ "expiration": "1337",
+ "item_id": "1",
+ "owner": "Max",
+ "price": "1000$",
+ "title": "Macbook Air"
+}
 ~~~
