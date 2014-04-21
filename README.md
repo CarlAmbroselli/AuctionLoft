@@ -7,9 +7,9 @@ AppEngine Instance running on: [https://auctionloft.appspot.com](https://auction
 ##Endpoints
 
 ###List Items
-|Path    | Method | Params |
-|:-------|:-------|:-------|
-|/items  |GET     |none    |
+|Path    | Method | Params | Authorization |
+|:-------|:-------|:-------|:--------------|
+|/items  |GET     |none    |no 			   |
  
 
 #####Request:
@@ -46,9 +46,9 @@ GET https://auctionloft.appspot.com/_ah/api/staging/v1/items
 ~~~
 
 ###Get Item
-|Path    	 | Method | Params |
-|:-----------|:-------|:-------|
-|/item/{id}  |GET     |none    |
+|Path    	 | Method | Params | Authorization |
+|:-----------|:-------|:-------|:--------------|
+|/item/{id}  |GET     |none    |no 			   |
  
 
 #####Request:
