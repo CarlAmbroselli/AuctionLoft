@@ -46,7 +46,7 @@ GET https://auctionloft.appspot.com/_ah/api/staging/v1/items
 ~~~
 
 ###Get Item
-|Path    	 | Method | Params | Authorization |
+|Path      	 | Method | Params | Authorization |
 |:-----------|:-------|:-------|:--------------|
 |/item/{id}  |GET     |none    |no 			   |
  
@@ -67,3 +67,28 @@ GET https://auctionloft.appspot.com/_ah/api/staging/v1/item/1
  "title": "Macbook Air"
 }
 ~~~
+
+
+###Add Item
+|Path        | Method | Params | Authorization |
+|:-----------|:-------|:-------|:--------------|
+|/item/add   |POST    |{<br />&#09;title:'abc',<br />&#09; description:'abc',<br />&#09; expiration:'abc',<br />&#09; price:'abc',<br />&#09; item_id:'abc',<br />&#09; owner<br />}    |no         |
+ 
+
+#####Request:
+~~~
+GET https://auctionloft.appspot.com/_ah/api/staging/v1/item/1
+~~~
+
+#####Response:
+~~~
+{
+ "description": "Super lightweight laptop",
+ "expiration": "1337",
+ "item_id": "1",
+ "owner": "Max",
+ "price": "1000$",
+ "title": "Macbook Air"
+}
+~~~
+
