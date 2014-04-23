@@ -77,18 +77,31 @@ GET https://auctionloft.appspot.com/_ah/api/staging/v1/item/1
 
 #####Request:
 ~~~
-GET https://auctionloft.appspot.com/_ah/api/staging/v1/item/1
+POST http://localhost:8080/_ah/api/staging/v1/item/add
+
+Content-Type:  application/json
+ 
+{
+ "description": "Super lightweight laptop",
+ "expiration": "never",
+ "item_id": "1337",
+ "owner": "Max",
+ "price": "100$",
+ "title": "Macbook"
+}
 ~~~
 
 #####Response:
 ~~~
+200 OK
+   
 {
  "description": "Super lightweight laptop",
- "expiration": "1337",
- "item_id": "1",
+ "expiration": "never",
+ "item_id": "1337",
  "owner": "Max",
- "price": "1000$",
- "title": "Macbook Air"
+ "price": "100$",
+ "title": "Macbook"
 }
 ~~~
 
