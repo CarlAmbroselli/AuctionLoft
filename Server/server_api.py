@@ -17,6 +17,7 @@ class PostMessage(messages.Message):
 
 POST_RESOURCE = endpoints.ResourceContainer(PostMessage)
 
+
 @endpoints.api(name='staging', version='v1')
 class ServerApi(remote.Service):
 
@@ -24,23 +25,17 @@ class ServerApi(remote.Service):
                   message_types.VoidMessage,
                   id=messages.StringField(1, variant=messages.Variant.STRING))
 
+  @endpoints.method(ID_RESOURCE, ResponseItem,
+                    path='item/{id}', http_method='GET',
+                    name='items.getItem')
+  def items_get(self, request):
+      return getItem(request.id)
+
   @endpoints.method(message_types.VoidMessage, ItemCollection,
                     path='items', http_method='GET',
                     name='items.listItems')
   def items_list(self, unused_request):
       return listItems()
-
-  @endpoints.method(ID_RESOURCE, Item,
-                    path='item/{id}', http_method='GET',
-                    name='items.getItem')
-  def items_get(self, request):
-      return getItem(request.id)
-
-  @endpoints.method(ID_RESOURCE, Item,
-                    path='item/{id}', http_method='GET',
-                    name='items.getItem')
-  def items_get(self, request):
-      return getItem(request.id)
 
   MULTIPLY_METHOD_RESOURCE = endpoints.ResourceContainer(
         Item,
@@ -51,11 +46,24 @@ class ServerApi(remote.Service):
                   path='item/add', http_method='POST',
                   name='items.addItem')
   def items_add(self, request):
-      return addItem(new_title=request.title, 
-                     new_description=request.description, 
-                     new_expiration=request.expiration, 
-                     new_price=request.price, 
-                     new_item_id=request.item_id, 
+      return addItem(new_title=request.title,
+                     new_description=request.description,
+                     new_expiration=request.expiration,
+                     new_price=request.price,
+                     new_item_id=request.item_id,
                      new_owner=request.owner)
+
+  @endpoints.method(ID_RESOURCE, ResponseString,
+                    path='del/{id}', http_method='POST',
+                    name='items.delItem')
+  def items_del(self, request):
+      return delItem(request.id)
+
+#  @endpoints.method(Item, Item,
+#                    path='item/mod', http_method='POST',
+#                    name='items.modItems')
+#  def items_mod(self, request):
+#      return modItem()
+
 
 APPLICATION = endpoints.api_server([ServerApi])
