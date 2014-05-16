@@ -5,8 +5,7 @@ import endpoints
 from ..model.items import Item
 from ..model.items import ItemDB
 from ..model.items import ItemCollection
-from ..model.items import ResponseItem
-from ..model.items import ResponseString
+from ..model.response import Response
 
 import datetime
 from google.appengine.ext import ndb
@@ -29,16 +28,16 @@ def getItem(item_id):
     raise endpoints.InternalServerErrorException('Multiple Items for %s found.' %
                                             (item_id,))
   elif items.count() == 1:
-    return ResponseItem(msg='Item '+item_id, code='OK', data=itemDB_to_item(items.get()))
+    return Response(msg='Item '+item_id, code='OK', data=str(itemDB_to_item(items.get())))
   raise endpoints.NotFoundException('Item %s not found.' %
                                             (item_id,))
 
 def addItem(new_title='', new_description='', new_expiration='', new_price='', new_item_id='', new_owner=''):
+  response = Response(msg="Unknown Error", code="ERROR", data=[])
   items = ItemDB.query(ItemDB.item_id == new_item_id)
 
   if items.count() >= 1:
-    raise endpoints.InternalServerErrorException('Item with item_id %s already exists!' %
-                                            (new_item_id,))
+    return Response(msg="Item with item_id "+new_item_id+" already exists!", code="ERROR", data=[])
 
   item = ItemDB(title=new_title,
                 description=new_description,
@@ -47,15 +46,17 @@ def addItem(new_title='', new_description='', new_expiration='', new_price='', n
                 item_id=new_item_id,
                 owner=new_owner)
   item.put()
-  return itemDB_to_item(item)
+  response = Response(msg="Item "+new_item_id+" added succesfully", code="OK", data=[str(itemDB_to_item(item))])
+
+  return response
 
 def delItem(item_id):
   for item in ItemDB.query(ItemDB.item_id == item_id):
     item.key.delete()
 
-  return ResponseString(msg="Item deleted succesfully",
-                        code="OK",
-                        data="")
+  return Response(msg="Item "+item_id+" deleted succesfully",
+                  code="OK",
+                  data=[])
 
 
 

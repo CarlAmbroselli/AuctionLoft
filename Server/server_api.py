@@ -14,7 +14,7 @@ class PostMessage(messages.Message):
   expiration  = messages.StringField(3)
   price       = messages.StringField(4)
   item_id     = messages.StringField(5)
-  owner       = messages.MessageField(6)
+  owner       = messages.StringField(6)
 
 POST_RESOURCE = endpoints.ResourceContainer(PostMessage)
 
@@ -37,12 +37,13 @@ class ServerApi(remote.Service):
   def items_get(self, request):
       return getItem(request.id)
 
-  MULTIPLY_METHOD_RESOURCE = endpoints.ResourceContainer(
-        Item,
-        times=messages.IntegerField(2, variant=messages.Variant.INT32,
-                                    required=True))
+  ITEM_RESOURCE = endpoints.ResourceContainer(
+        Item#,
+        #times=messages.IntegerField(2, variant=messages.Variant.INT32,
+        #                            required=True)
+        )
 
-  @endpoints.method(POST_RESOURCE, Response,
+  @endpoints.method(ITEM_RESOURCE, Response,
                   path='item/add', http_method='POST',
                   name='items.addItem')
   def items_add(self, request):
@@ -53,7 +54,7 @@ class ServerApi(remote.Service):
                      new_item_id=request.item_id,
                      new_owner=request.owner)
 
-  @endpoints.method(ID_RESOURCE, ResponseString,
+  @endpoints.method(ID_RESOURCE, Response,
                     path='del/{id}', http_method='POST',
                     name='items.delItem')
   def items_del(self, request):
