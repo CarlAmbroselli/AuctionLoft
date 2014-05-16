@@ -27,16 +27,3 @@ class ItemDB(ndb.Model):
 class ItemCollection(messages.Message):
   """Collection of Items."""
   items = messages.MessageField(Item, 1, repeated=True)
-
-class ResponseItem(messages.Message):
-  msg = messages.StringField(1)
-  code = messages.StringField(2)
-  data = messages.MessageField(Item, 3)
-
-class ResponseString(messages.Message):
-  msg = messages.StringField(1)
-  code = messages.StringField(2)
-  data = messages.StringField(3)
-
-if __name__ == '__main__':
-    main()

@@ -66,6 +66,3 @@ def itemDB_to_item(item):
                 price=item.price,
                 item_id=item.item_id,
                 owner=item.owner)
-
-if __name__ == '__main__':
-  main()
