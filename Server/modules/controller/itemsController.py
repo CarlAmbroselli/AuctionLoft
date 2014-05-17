@@ -2,6 +2,8 @@
 # Licensed under MIT License
 
 import endpoints
+import json
+import collections
 from ..model.items import Item
 from ..model.items import ItemDB
 from ..model.items import ItemCollection
@@ -17,10 +19,14 @@ STORED_ITEMS = ItemCollection(items=[
 ])
 
 def listItems():
-  itemList = []
+  response = Response(msg="Unknown Error", code="ERROR", data=[])
+  count = 0
   for item in ItemDB.query():
-    itemList.append(itemDB_to_item(item))
-  return ItemCollection(items=itemList)
+    response.data.append(item_to_json(itemDB_to_item(item)))
+    count += 1
+  response.msg = "Found " + str(count) + " items!"
+  response.code = "OK"
+  return response
 
 def getItem(item_id):
   items = ItemDB.query(ItemDB.item_id == item_id)
@@ -67,3 +73,23 @@ def itemDB_to_item(item):
                 price=item.price,
                 item_id=item.item_id,
                 owner=item.owner)
+
+def item_to_json(item):
+     return str(convertObjectToJson({
+                 'title' : item.title,
+                 'description' : item.description,
+                 'expiration' : item.expiration,
+                 'price' : item.price,
+                 'item_id' : item.item_id,
+                 'owner' : item.owner)
+               }))
+
+def convertObjectToJson(data):
+    if isinstance(data, basestring):
+        return str(data)
+    elif isinstance(data, collections.Mapping):
+        return dict(map(convertObjectToJson, data.iteritems()))
+    elif isinstance(data, collections.Iterable):
+        return type(data)(map(convertObjectToJson, data))
+    else:
+        return data

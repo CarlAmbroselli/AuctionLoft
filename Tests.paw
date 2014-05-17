@@ -82,11 +82,11 @@
     </object>
     <object type="LMREQUEST" id="z105">
         <attribute name="uuid" type="string">9FE64F89-8A47-475D-A6E6-99DD87140F75</attribute>
-        <attribute name="url" type="string">http://localhost:8080/_ah/api/staging/v1/items/1</attribute>
+        <attribute name="url" type="string">http://localhost:8080/_ah/api/staging/v1/items</attribute>
         <attribute name="timeoutinterval" type="float">30</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
         <attribute name="redirectauthorization" type="bool">0</attribute>
-        <attribute name="method" type="string">POST</attribute>
+        <attribute name="method" type="string">GET</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">List Items Duplicate</attribute>
