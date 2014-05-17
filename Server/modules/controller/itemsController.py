@@ -35,24 +35,24 @@ def getItem(item_id):
     response.msg = 'Multiple Items for ' + item_id + ' found.'
     response.code = 'ERROR'
   elif items.count() == 1:
-    return Response(msg='Item '+item_id, code='OK', data=itemDB_to_item(items.get()))
-  return Response(msg='Item '+item_id + ' not found!', code='OK', data=[])
+    return ItemResponse(msg='Item '+item_id, code='OK', data=[itemDB_to_item(items.get())])
+  return ItemResponse(msg='Item '+item_id + ' not found!', code='OK', data=[])
 
-def addItem(new_title='', new_description='', new_expiration='', new_price='', new_item_id='', new_owner=''):
+def addItem(item):
   response = ItemResponse(msg="Unknown Error", code="ERROR", data=[])
-  items = ItemDB.query(ItemDB.item_id == new_item_id)
+  items = ItemDB.query(ItemDB.item_id == item.item_id)
 
   if items.count() >= 1:
     return ItemResponse(msg="Item with item_id "+new_item_id+" already exists!", code="ERROR", data=[])
 
-  item = ItemDB(title=new_title,
-                description=new_description,
-                expiration=new_expiration,
-                price=new_price,
-                item_id=new_item_id,
-                owner=new_owner)
-  item.put()
-  response = ItemResponse(msg="Item "+new_item_id+" added succesfully", code="OK", data=[itemDB_to_item(item)])
+  new_item = ItemDB(title=item.title,
+                description=item.description,
+                expiration=item.expiration,
+                price=item.price,
+                item_id=item.item_id,
+                owner=item.owner)
+  new_item.put()
+  response = ItemResponse(msg="Item "+item.item_id+" added succesfully", code="OK", data=[itemDB_to_item(new_item)])
 
   return response
 
@@ -63,6 +63,23 @@ def delItem(item_id):
   return Response(msg="Item "+item_id+" deleted succesfully",
                   code="OK",
                   data=[])
+
+def modItem(item):
+  response = ItemResponse(msg="Unknown Error", code="ERROR", data=[])
+  items = ItemDB.query(ItemDB.item_id == item.item_id)
+  if items.count() > 1:
+    response.msg = 'Multiple Items for ' + item.item_id + ' found.'
+    response.code = 'ERROR'
+  elif items.count() == 1:
+    mItem = items.get()
+    if item.title != None: mItem.title=item.title
+    if item.description != None:  mItem.description=item.description
+    if item.expiration != None:  mItem.expiration=item.expiration
+    if item.price != None:  mItem.price=item.price
+    if item.owner != None:  mItem.owner=item.owner
+    mItem.put()
+    return ItemResponse(msg='Item '+item.item_id, code='OK', data=[itemDB_to_item(mItem)])
+  return ItemResponse(msg='Item '+item.item_id + ' not found!', code='OK', data=[])
 
 
 
