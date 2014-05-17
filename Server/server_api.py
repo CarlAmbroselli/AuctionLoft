@@ -65,11 +65,11 @@ class ServerApi(remote.Service):
   def items_del(self, request):
       return delItem(request.id)
 
-#  @endpoints.method(Item, Item,
-#                    path='item/mod', http_method='POST',
-#                    name='items.modItems')
-#  def items_mod(self, request):
-#      return modItem()
+  @endpoints.method(ID_RESOURCE, Response,
+                   path='item/mod', http_method='POST',
+                   name='items.modItems')
+  def items_mod(self, request):
+     return modItem()
 
 
 ################################################################################
