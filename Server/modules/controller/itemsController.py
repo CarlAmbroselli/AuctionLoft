@@ -6,17 +6,11 @@ import json
 import collections
 from ..model.items import Item
 from ..model.items import ItemDB
-from ..model.items import ItemCollection
 from ..model.response import *
 
 import datetime
 from google.appengine.ext import ndb
 from google.appengine.api import users
-
-STORED_ITEMS = ItemCollection(items=[
-  Item(title='Macbook Air', description='Super lightweight laptop', expiration='1337', price='1000$', item_id='1', owner='Max'),
-  Item(title='Macbook Pro', description='Super fancy retina laptop', expiration='1337', price='1500$', item_id='2', owner='Tom'),
-])
 
 def listItems():
   response = ItemResponse(msg="Unknown Error", code="ERROR", data=[])

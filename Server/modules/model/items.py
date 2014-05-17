@@ -23,7 +23,3 @@ class ItemDB(ndb.Model):
   price         = ndb.StringProperty()
   item_id       = ndb.StringProperty(required=True)
   owner         = ndb.StringProperty()
-
-class ItemCollection(messages.Message):
-  """Collection of Items."""
-  items = messages.MessageField(Item, 1, repeated=True)

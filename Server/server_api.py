@@ -7,6 +7,7 @@ from protorpc import message_types
 from protorpc import remote
 from modules.controller.itemsController import *
 from modules.controller.usersController import *
+from modules.controller.feedbackController import *
 from modules.model.response import *
 
 @endpoints.api(name='staging', version='v1')
@@ -41,7 +42,7 @@ class ServerApi(remote.Service):
       return addItem(request)
 
   @endpoints.method(ID_RESOURCE, Response,
-                    path='del/{id}', http_method='POST',
+                    path='item/del/{id}', http_method='POST',
                     name='items.delItem')
   def items_del(self, request):
       return delItem(request.id)
@@ -100,6 +101,42 @@ class ServerApi(remote.Service):
                      image_url=request.image_url,
                      tag=request.tag,
                      disabled=request.disabled)
+
+################################################################################
+##########################   FEEDBACK API ######################################
+################################################################################
+
+  @endpoints.method(message_types.VoidMessage, FeedbackResponse,
+                    path='feedbacks', http_method='GET',
+                    name='feedback.listFeedbacks')
+  def feedback_list(self, unused_request):
+      return listFeedback()
+
+  @endpoints.method(ID_RESOURCE, FeedbackResponse,
+                    path='feedbacks/{id}', http_method='GET',
+                    name='feedbacks.getFeedback')
+  def feedback_get(self, request):
+      return getFeedback(request.id)
+
+  FEEDBACK_RESOURCE = endpoints.ResourceContainer(Feedback)
+
+  @endpoints.method(FEEDBACK_RESOURCE, FeedbackResponse,
+                  path='feedbacks/add', http_method='POST',
+                  name='feedbacks.addFeedback')
+  def feedback_add(self, request):
+      return addFeedback(request)
+
+  @endpoints.method(ID_RESOURCE, Response,
+                    path='feedbacks/del/{id}', http_method='POST',
+                    name='feedbacks.delFeedback')
+  def feedback_del(self, request):
+      return delFeedback(request.id)
+
+  @endpoints.method(ITEM_RESOURCE, FeedbackResponse,
+                   path='feedbacks/mod', http_method='POST',
+                   name='feedbacks.modFeedbacks')
+  def feedback_mod(self, request):
+     return modFeedback(request)
 
 
 APPLICATION = endpoints.api_server([ServerApi])
