@@ -7,7 +7,7 @@ import collections
 from ..model.items import Item
 from ..model.items import ItemDB
 from ..model.items import ItemCollection
-from ..model.response import Response
+from ..model.response import *
 
 import datetime
 from google.appengine.ext import ndb
@@ -19,31 +19,31 @@ STORED_ITEMS = ItemCollection(items=[
 ])
 
 def listItems():
-  response = Response(msg="Unknown Error", code="ERROR", data=[])
+  response = ItemResponse(msg="Unknown Error", code="ERROR", data=[])
   count = 0
   for item in ItemDB.query():
-    response.data.append(item_to_json(itemDB_to_item(item)))
+    response.data.append(itemDB_to_item(item))
     count += 1
   response.msg = "Found " + str(count) + " items!"
   response.code = "OK"
   return response
 
 def getItem(item_id):
+  response = ItemResponse(msg="Unknown Error", code="ERROR", data=[])
   items = ItemDB.query(ItemDB.item_id == item_id)
   if items.count() > 1:
-    raise endpoints.InternalServerErrorException('Multiple Items for %s found.' %
-                                            (item_id,))
+    response.msg = 'Multiple Items for ' + item_id + ' found.'
+    response.code = 'ERROR'
   elif items.count() == 1:
-    return Response(msg='Item '+item_id, code='OK', data=str(itemDB_to_item(items.get())))
-  raise endpoints.NotFoundException('Item %s not found.' %
-                                            (item_id,))
+    return Response(msg='Item '+item_id, code='OK', data=itemDB_to_item(items.get()))
+  return Response(msg='Item '+item_id + ' not found!', code='OK', data=[])
 
 def addItem(new_title='', new_description='', new_expiration='', new_price='', new_item_id='', new_owner=''):
-  response = Response(msg="Unknown Error", code="ERROR", data=[])
+  response = ItemResponse(msg="Unknown Error", code="ERROR", data=[])
   items = ItemDB.query(ItemDB.item_id == new_item_id)
 
   if items.count() >= 1:
-    return Response(msg="Item with item_id "+new_item_id+" already exists!", code="ERROR", data=[])
+    return ItemResponse(msg="Item with item_id "+new_item_id+" already exists!", code="ERROR", data=[])
 
   item = ItemDB(title=new_title,
                 description=new_description,
@@ -52,7 +52,7 @@ def addItem(new_title='', new_description='', new_expiration='', new_price='', n
                 item_id=new_item_id,
                 owner=new_owner)
   item.put()
-  response = Response(msg="Item "+new_item_id+" added succesfully", code="OK", data=[str(itemDB_to_item(item))])
+  response = ItemResponse(msg="Item "+new_item_id+" added succesfully", code="OK", data=[itemDB_to_item(item)])
 
   return response
 
@@ -73,23 +73,3 @@ def itemDB_to_item(item):
                 price=item.price,
                 item_id=item.item_id,
                 owner=item.owner)
-
-def item_to_json(item):
-     return str(convertObjectToJson({
-                 'title' : item.title,
-                 'description' : item.description,
-                 'expiration' : item.expiration,
-                 'price' : item.price,
-                 'item_id' : item.item_id,
-                 'owner' : item.owner)
-               }))
-
-def convertObjectToJson(data):
-    if isinstance(data, basestring):
-        return str(data)
-    elif isinstance(data, collections.Mapping):
-        return dict(map(convertObjectToJson, data.iteritems()))
-    elif isinstance(data, collections.Iterable):
-        return type(data)(map(convertObjectToJson, data))
-    else:
-        return data

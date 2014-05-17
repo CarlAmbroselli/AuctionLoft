@@ -30,13 +30,13 @@ class ServerApi(remote.Service):
                   message_types.VoidMessage,
                   id=messages.StringField(1, variant=messages.Variant.STRING))
 
-  @endpoints.method(message_types.VoidMessage, Response,
+  @endpoints.method(message_types.VoidMessage, ItemResponse,
                     path='items', http_method='GET',
                     name='items.listItems')
   def items_list(self, unused_request):
       return listItems()
 
-  @endpoints.method(ID_RESOURCE, Response,
+  @endpoints.method(ID_RESOURCE, ItemResponse,
                     path='item/{id}', http_method='GET',
                     name='items.getItem')
   def items_get(self, request):
@@ -48,7 +48,7 @@ class ServerApi(remote.Service):
         #                            required=True)
         )
 
-  @endpoints.method(ITEM_RESOURCE, Response,
+  @endpoints.method(ITEM_RESOURCE, ItemResponse,
                   path='item/add', http_method='POST',
                   name='items.addItem')
   def items_add(self, request):
@@ -65,7 +65,7 @@ class ServerApi(remote.Service):
   def items_del(self, request):
       return delItem(request.id)
 
-  @endpoints.method(ID_RESOURCE, Response,
+  @endpoints.method(ID_RESOURCE, ItemResponse,
                    path='item/mod', http_method='POST',
                    name='items.modItems')
   def items_mod(self, request):
