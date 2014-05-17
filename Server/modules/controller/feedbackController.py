@@ -62,19 +62,17 @@ def delFeedback(feedback_id):
 
 def modFeedback(feedback):
   response = FeedbackResponse(msg="Unknown Error", code="ERROR", data=[])
-  # feedbacks = FeedbackDB.query(FeedbackDB.feedback_id == feedback.feedback_id)
-  # if feedbacks.count() > 1:
-  #   response.msg = 'Multiple Feedbacks for ' + feedback.feedback_id + ' found.'
-  #   response.code = 'ERROR'
-  # elif feedbacks.count() == 1:
-  #   mFeedback = feedbacks.get()
-  #   if feedback.author != None: mFeedback.title=feedback.author
-  #   if feedback.rating != None:  mFeedback.description=feedback.rating
-  #   if feedback.expiration != None:  mFeedback.expiration=feedback.expiration
-  #   if feedback.price != None:  mFeedback.price=feedback.price
-  #   if feedback.owner != None:  mFeedback.owner=feedback.owner
-  #   mFeedback.put()
-  #   return FeedbackResponse(msg='Feedback '+feedback.feedback_id, code='OK', data=[feedbackDB_to_feedback(mFeedback)])
+  feedbacks = FeedbackDB.query(FeedbackDB.feedback_id == feedback.feedback_id)
+  if feedbacks.count() > 1:
+    response.msg = 'Multiple Feedbacks for ' + feedback.feedback_id + ' found.'
+    response.code = 'ERROR'
+  elif feedbacks.count() == 1:
+    mFeedback = feedbacks.get()
+    for key in arguments:
+      if arguments[key] != None and hasattr(mFeedback, key):
+        setattr(mFeedback, key, arguments[key])
+    mFeedback.put()
+    return FeedbackResponse(msg='Feedback '+feedback.feedback_id, code='OK', data=[feedbackDB_to_feedback(mFeedback)])
   return FeedbackResponse(msg='Feedback '+feedback.feedback_id + ' not found!', code='OK', data=[])
 
 

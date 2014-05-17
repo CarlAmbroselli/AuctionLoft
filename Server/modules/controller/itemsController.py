@@ -66,11 +66,9 @@ def modItem(item):
     response.code = 'ERROR'
   elif items.count() == 1:
     mItem = items.get()
-    if item.title != None: mItem.title=item.title
-    if item.description != None:  mItem.description=item.description
-    if item.expiration != None:  mItem.expiration=item.expiration
-    if item.price != None:  mItem.price=item.price
-    if item.owner != None:  mItem.owner=item.owner
+    for key in arguments:
+      if arguments[key] != None and hasattr(mItem, key):
+        setattr(mItem, key, arguments[key])
     mItem.put()
     return ItemResponse(msg='Item '+item.item_id, code='OK', data=[itemDB_to_item(mItem)])
   return ItemResponse(msg='Item '+item.item_id + ' not found!', code='OK', data=[])
