@@ -74,15 +74,6 @@ def itemDB_to_item(item):
                 item_id=item.item_id,
                 owner=item.owner)
 
-def item_to_json(item):
-     return str(convertObjectToJson({
-                 'title' : item.title,
-                 'description' : item.description,
-                 'expiration' : item.expiration,
-                 'price' : item.price,
-                 'item_id' : item.item_id,
-                 'owner' : item.owner)
-               }))
 
 def convertObjectToJson(data):
     if isinstance(data, basestring):

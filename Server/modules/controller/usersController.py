@@ -55,7 +55,23 @@ def delUser(user_id):
                   code="OK",
                   data=[])
 
+def modUser(user_id, email, name, description, image_url, tag, disabled):
+  arguments = locals()
+  user = UserDB.query(UserDB.user_id == user_id)
+  if user.count() > 1:
+    return Response(msg="Multiple Users with this ID exist",
+                    code="OK",
+                    data=[])
 
+  muser = user.get()
+  for key in arguments:
+    if arguments[key] != None and hasattr(muser, key):
+      setattr(muser, key, arguments[key])
+  muser.put()
+
+  return Response(msg="User "+user_id+" modified succesfully",
+                  code="OK",
+                  data=[])
 
 def userDB_to_user(user):
     return User(user_id=user.user_id,

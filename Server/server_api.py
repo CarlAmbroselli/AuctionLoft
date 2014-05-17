@@ -88,11 +88,7 @@ class ServerApi(remote.Service):
   def users_get(self, request):
       return getUser(request.id)
 
-  USER_RESOURCE = endpoints.ResourceContainer(
-        User#,
-        #times=messages.IntegerField(2, variant=messages.Variant.INT32,
-        #                            required=True)
-        )
+  USER_RESOURCE = endpoints.ResourceContainer(User)
 
   @endpoints.method(USER_RESOURCE, Response,
                   path='user/add', http_method='POST',
@@ -112,11 +108,17 @@ class ServerApi(remote.Service):
   def items_del(self, request):
       return delUser(request.id)
 
-  #  @endpoints.method(Item, Item,
-  #                    path='item/mod', http_method='POST',
-  #                    name='items.modItems')
-  #  def items_mod(self, request):
-  #      return modItem()
+  @endpoints.method(USER_RESOURCE, Response,
+                    path='user/mod', http_method='POST',
+                    name='users.modUsers')
+  def users_mod(self, request):
+      return modUser(user_id=request.user_id,
+                     email=request.email,
+                     name=request.name,
+                     description=request.description,
+                     image_url=request.image_url,
+                     tag=request.tag,
+                     disabled=request.disabled)
 
 
 APPLICATION = endpoints.api_server([ServerApi])
