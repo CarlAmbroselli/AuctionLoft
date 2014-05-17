@@ -3,10 +3,10 @@
 
 from protorpc import messages
 import datetime
-from google.appengine.ext import db
 from google.appengine.api import users
 from items import *
 from feedback import *
+from users import *
 
 #### Items
 class ItemResponse(messages.Message):
@@ -22,6 +22,13 @@ class FeedbackResponse(messages.Message):
   msg       = messages.StringField(1, required=True)
   code      = messages.StringField(2, required=True)
   data      = messages.MessageField(Feedback, 3, repeated=True)
+
+#### User
+class UserResponse(messages.Message):
+  """JSON Response in the shop"""
+  msg       = messages.StringField(1, required=True)
+  code      = messages.StringField(2, required=True)
+  data      = messages.MessageField(User, 3, repeated=True) #repeated means array
 
 
 #### Generic

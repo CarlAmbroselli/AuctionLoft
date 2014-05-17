@@ -58,13 +58,13 @@ class ServerApi(remote.Service):
 ##############################   USER API ######################################
 ################################################################################
 
-  @endpoints.method(message_types.VoidMessage, Response,
+  @endpoints.method(message_types.VoidMessage, UserResponse,
                     path='users', http_method='GET',
-                    name='users.lsitUsers')
+                    name='users.listUsers')
   def users_list(self, unused_request):
       return listUsers()
 
-  @endpoints.method(ID_RESOURCE, Response,
+  @endpoints.method(ID_RESOURCE, UserResponse,
                     path='user/{id}', http_method='GET',
                     name='users.getUser')
   def users_get(self, request):
@@ -72,7 +72,7 @@ class ServerApi(remote.Service):
 
   USER_RESOURCE = endpoints.ResourceContainer(User)
 
-  @endpoints.method(USER_RESOURCE, Response,
+  @endpoints.method(USER_RESOURCE, UserResponse,
                   path='user/add', http_method='POST',
                   name='users.addUser')
   def users_add(self, request):
@@ -84,13 +84,13 @@ class ServerApi(remote.Service):
                      new_tag=request.tag,
                      new_disabled=request.disabled)
 
-  @endpoints.method(ID_RESOURCE, Response,
+  @endpoints.method(ID_RESOURCE, UserResponse,
                     path='del/{id}', http_method='POST',
                     name='users.delUser')
   def items_del(self, request):
       return delUser(request.id)
 
-  @endpoints.method(USER_RESOURCE, Response,
+  @endpoints.method(USER_RESOURCE, UserResponse,
                     path='user/mod', http_method='POST',
                     name='users.modUsers')
   def users_mod(self, request):
