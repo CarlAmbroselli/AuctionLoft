@@ -8,6 +8,7 @@ from protorpc import remote
 from modules.controller.itemsController import *
 from modules.controller.usersController import *
 from modules.controller.feedbackController import *
+from modules.controller.commsController import *
 from modules.model.response import *
 
 @endpoints.api(name='staging', version='v1')
@@ -137,6 +138,36 @@ class ServerApi(remote.Service):
                    name='feedbacks.modFeedbacks')
   def feedback_mod(self, request):
      return modFeedback(request)
+
+################################################################################
+#############################  COMMS API  ######################################
+################################################################################
+
+  @endpoints.method(message_types.VoidMessage, CommResponse,
+                    path='comm', http_method='GET',
+                    name='comm.listComms')
+  def comm_list(self, unused_request):
+      return listComm()
+
+  @endpoints.method(ID_RESOURCE, CommResponse,
+                    path='comm/{id}', http_method='GET',
+                    name='comm.getComm')
+  def comm_get(self, request):
+      return getComm(request.id)
+
+  COMM_RESOURCE = endpoints.ResourceContainer(Comm)
+
+  @endpoints.method(COMM_RESOURCE, CommResponse,
+                  path='comm/add', http_method='POST',
+                  name='comm.addComm')
+  def comm_add(self, request):
+      return addComm(request)
+
+  @endpoints.method(ID_RESOURCE, Response,
+                    path='comm/del/{id}', http_method='POST',
+                    name='comm.delComm')
+  def comm_del(self, request):
+      return delComm(request.id)
 
 
 APPLICATION = endpoints.api_server([ServerApi])
